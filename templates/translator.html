@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.css" rel="stylesheet" />
+    <style>
+        .startButton {
+            background-color: #ff9900;
+        }
+        .startButton:hover {
+            background-color: #c97800;
+        }
+        #stopButton {
+            background-color: red;
+        }
+        #stopButton:hover {
+            background-color: rgb(134, 0, 0);
+        }
+    </style>
+    <title>Translator</title>
+</head>
+<body>
+
+<!-- Video Capture Card -->
+<div class="w-2xl max-w-2xl bg-white border border-grey-400 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-10 ml-6 ">
+    <!-- Video Capture -->
+    <div class="flex justify-end px-4 pt-4">
+        <!-- <video id="videoElement" class="border rounded-lg" autoplay></video>
+        <canvas id="canvas" style="display: none;"></canvas> -->
+        <img src="{{ url_for('video') }}" class="border rounded-lg w-2xl"/>
+    </div>
+    <!-- Closed Caption -->
+    <div id="cc" class="px-4 pt-4" style="display: none; color: black;">
+        <h6 class="font-bold text-lg">Closed Captions:</h6>
+        <p class="text-lg">This is the closed captions.</p>
+        <div id="result-container"></div>
+    </div>
+    <!-- Start and stop btn -->
+    <div class="flex flex-col items-center pb-10">
+        <div class="flex mt-4 space-x-3 md:mt-6">
+            <a href="#" id="startButton" class="startButton inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white rounded-lg focus:ring-4">Start Capturing</a>
+            <a href="#" id="stopButton" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white rounded-lg">Stop Capture</a>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script> -->
+    <script>
+        // Get the video element and buttons
+        // const videoElement = document.getElementById('videoElement');
+        // const startButton = document.getElementById('startButton');
+        // const stopButton = document.getElementById('stopButton');
+        // const canvas = document.getElementById('canvas');
+        // const context = canvas.getContext('2d');
+        // const closedCaptions = document.getElementById('cc');
+        // const resultContainer = document.getElementById('result-container');
+        // const socket = io.connect('http://' + document.domain + ':' + location.port);
+        // let mediaRecorder;
+
+        // // Check for browser support
+        // if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        //     navigator.mediaDevices
+        //         .getUserMedia({ video: true }) // Request access to the webcam
+        //         .then(function (stream) {
+        //             // Attach the video stream to the video element
+        //             videoElement.srcObject = stream;
+
+        //             // Handle the "Start Capture" button click
+        //             startButton.addEventListener('click', function () {
+        //                 startCapturing();
+        //                 startVideoStreaming();
+        //             });
+
+        //             // Handle the "Stop Capture" button click
+        //             stopButton.addEventListener('click', function () {
+        //                 stopCapturing();
+        //                 stopVideoStreaming();
+        //             });
+
+        //             // Function to start capturing frames
+        //             function startCapturing() {
+        //                 if (closedCaptions.style.display === 'none') {
+        //                     closedCaptions.style.display = 'block'; // Show the div
+        //                 } else {
+        //                     closedCaptions.style.display = 'none';  // Hide the div
+        //                 }
+        //             }
+
+        //             // Function to stop capturing frames
+        //             function stopCapturing() {
+        //                 if (closedCaptions.style.display === 'none') {
+        //                     closedCaptions.style.display = 'block'; // Show the div
+        //                 } else {
+        //                     closedCaptions.style.display = 'none';  // Hide the div
+        //                 }
+        //             }
+
+        //             async function startVideoStreaming() {
+        //                 const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+        //                 videoElement.srcObject = stream;
+
+        //                 mediaRecorder = new MediaRecorder(stream);
+        //                 mediaRecorder.ondataavailable = (event) => {
+        //                     if (event.data.size > 0) {
+        //                         socket.emit('stream_video', event.data);
+        //                     }
+        //                 };
+
+        //                 mediaRecorder.start();
+        //             }
+
+        //             function stopVideoStreaming() {
+        //                 mediaRecorder.stop();
+        //                 mediaRecorder.stream.getTracks().forEach(track => track.stop());
+        //                 socket.disconnect();
+        //             }
+        //         })
+        //         .catch(function (error) {
+        //             console.error('Error accessing the webcam: ', error);
+        //         });
+        // } else {
+        //     console.error('getUserMedia is not supported in this browser.');
+        // }
+
+        // // implement socket
+        // // Function to handle incoming video stream
+        // socket.on('video_stream', function (data) {
+        //     videoElement.src = 'data:image/jpeg;base64,' + data;
+        // });
+
+        // // Function to handle incoming result updates
+        // socket.on('result_update', function (result) {
+        //     resultContainer.innerHTML = `<p>${result}</p>`;
+        // });
+
+    </script>
+    
+</body>
+</html>
