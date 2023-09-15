@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.css" rel="stylesheet" />
+    <style>
+        .startButton {
+            background-color: #ff9900;
+        }
+        .startButton:hover {
+            background-color: #c97800;
+        }
+        #stopButton {
+            background-color: red;
+        }
+        #stopButton:hover {
+            background-color: rgb(134, 0, 0);
+        }
+    </style>
+    <title>Translator</title>
+</head>
+<body>
+
+<!-- Video Capture Card -->
+<div class="w-2xl max-w-2xl bg-white border border-grey-400 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-10 ml-6 ">
+    <!-- Video Capture -->
+    <div class="flex justify-end px-4 pt-4">
+        <!-- <video id="videoElement" class="border rounded-lg" autoplay></video>
+        <canvas id="canvas" style="display: none;"></canvas> -->
+        <img src="{{ url_for('video') }}" class="border rounded-lg w-2xl"/>
+    </div>
+    <!-- Closed Caption -->
+    <div id="cc" class="px-4 pt-4" style="display: none; color: black;">
+        <h6 class="font-bold text-lg">Closed Captions:</h6>
+        <p id="result-container1" class="text-lg"></p>
+    </div>
+    <!-- Start and stop btn -->
+    <div class="flex flex-col items-center pb-10">
+        <div class="flex mt-4 space-x-3 md:mt-6">
+            <a href="#" id="startButton" class="startButton inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white rounded-lg focus:ring-4">Start Capturing</a>
+            <a href="#" id="stopButton" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white rounded-lg">Stop Capture</a>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+
+    <script>
+        // Get the video element and buttons
+        const startButton = document.getElementById('startButton');
+        const stopButton = document.getElementById('stopButton');
+        const closedCaptions = document.getElementById('cc');
+        
+        let ccList = []
+
+        // Connect to the WebSocket server
+        const socket = io.connect('http://127.0.0.1:5000/');
+
+        // Listen for messages from the server
+        socket.on('closedCaptions', function (caption) {
+            let resultContainer1 = document.getElementById('result-container1');
+            ccList.push(caption)
+            let size = ccList.length
+            if(size <= 30) {
+                resultContainer1.innerText = resultContainer1.innerText + " " + ccList[size-1]
+            } else {
+                ccList = []
+                resultContainer1.innerText = "";
+            }
+        });
+
+        // Handle the "Start Capture" button click
+        startButton.addEventListener('click', function () {
+            startCapturing();
+        });
+
+        // Handle the "Stop Capture" button click
+        stopButton.addEventListener('click', function () {
+            stopCapturing();
+        });
+
+        // Function to start capturing frames
+        function startCapturing() {
+            if (closedCaptions.style.display === 'none') {
+                closedCaptions.style.display = 'block'; // Show the div
+            } else {
+                closedCaptions.style.display = 'none';  // Hide the div
+            }
+        }
+
+        // Function to stop capturing frames
+        function stopCapturing() {
+            if (closedCaptions.style.display === 'none') {
+                closedCaptions.style.display = 'block'; // Show the div
+            } else {
+                closedCaptions.style.display = 'none';  // Hide the div
+            }
+        }
+
+    </script>
+    
+</body>
+</html>
