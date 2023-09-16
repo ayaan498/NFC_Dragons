@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.css" rel="stylesheet" />
+    <title>Meet</title>
+</head>
+<body>
+
+<!-- Video Capture Card -->
+<div class="w-full max-w-full bg-white border border-grey-400 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-10 ml-6 ">
+    <!-- Video Capture -->
+    <div class="flex justify-center">
+        <img id="videoSource" src="{{ url_for('videoCall') }}" width="0" height="0"/>
+        <div id="videoHolder" class="videoContainerTrain">
+            <video id="video" class="videoTrain" src="" muted autoplay playsinline></video>
+            <iframe src="https://go-hackathon.daily.co/hello-daily"
+                width=800 height=500 allow="microphone; camera" id="videoCall"></iframe>
+        </div>
+    </div>
+    <!-- Closed Caption -->
+    <div id="cc" class="px-4 pt-4" style="color: black;">
+        <h6 class="font-bold text-lg">Closed Captions:</h6>
+        <p id="result-container1" class="text-lg"></p>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+    <script>
+        const closedCaptions = document.getElementById('cc');
+        
+        let ccList = []
+
+        // Connect to the WebSocket server
+        const socket = io.connect('http://127.0.0.1:5000/');
+
+        // Listen for messages from the server
+        socket.on('closedCaptions', function (caption) {
+            let resultContainer1 = document.getElementById('result-container1');
+            ccList.push(caption)
+            let size = ccList.length
+            if(size <= 30) {
+                resultContainer1.innerText = resultContainer1.innerText + " " + ccList[size-1]
+            } else {
+                ccList = []
+                resultContainer1.innerText = "";
+            }
+        });
+    </script>
+    
+</body>
+</html>

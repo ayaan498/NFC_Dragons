@@ -5,53 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.css" rel="stylesheet" />
     <style>
-        .startButton {
-            background-color: #ff9900;
-        }
-        .startButton:hover {
-            background-color: #c97800;
-        }
-        #stopButton {
-            background-color: red;
-        }
-        #stopButton:hover {
-            background-color: rgb(134, 0, 0);
+        #mainContainer{
+            display: flex;
+            justify-content: start;
+            flex-wrap: wrap;
         }
     </style>
     <title>Translator</title>
 </head>
 <body>
 
-<!-- Video Capture Card -->
-<div class="w-2xl max-w-2xl bg-white border border-grey-400 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-10 ml-6 ">
-    <!-- Video Capture -->
-    <div class="flex justify-end px-4 pt-4">
-        <!-- <video id="videoElement" class="border rounded-lg" autoplay></video>
-        <canvas id="canvas" style="display: none;"></canvas> -->
-        <img src="{{ url_for('video') }}" class="border rounded-lg w-2xl"/>
-    </div>
-    <!-- Closed Caption -->
-    <div id="cc" class="px-4 pt-4" style="display: none; color: black;">
-        <h6 class="font-bold text-lg">Closed Captions:</h6>
-        <p id="result-container1" class="text-lg"></p>
-    </div>
-    <!-- Start and stop btn -->
-    <div class="flex flex-col items-center pb-10">
-        <div class="flex mt-4 space-x-3 md:mt-6">
-            <a href="#" id="startButton" class="startButton inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white rounded-lg focus:ring-4">Start Capturing</a>
-            <a href="#" id="stopButton" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white rounded-lg">Stop Capture</a>
+<div id="mainContainer">
+
+    <!-- Video Capture Card -->
+    <div class="w-2xl max-w-2xl bg-white border border-grey-400 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-10 ml-6 ">
+        <!-- Video Capture -->
+        <div class="flex justify-end px-4 pt-4">
+            <video id="videoElement" class="border rounded-lg" autoplay></video>
+            <canvas id="canvas" style="display: none;"></canvas>
+            <img id="videoSource" src="{{ url_for('video') }}" class="border rounded-lg w-2xl"/>
         </div>
+        <!-- Closed Caption -->
+        <div id="cc" class="px-4 pt-4" style="display: none; color: black;">
+            <h6 class="font-bold text-lg">Closed Captions:</h6>
+            <p id="result-container1" class="text-lg"></p>
+        </div>
+        
+        <!-- Start and stop btn -->
+        <div class="flex flex-col items-center pb-10">
+            <div class="flex mt-4 space-x-3 md:mt-6">
+                <a href="#" id="startButton" class="startButton inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Start Capturing</a>
+                <a href="#" id="stopButton" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700">Stop Capturing</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-2xl max-w-2xl bg-white border border-grey-400 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-10 ml-6 items-center px-6">
+        <h1 id="displayText" class="px-4 pt-4 font-bold size-xl" style="display: block;">
+            Recommendations Will come here.
+        </h1>
+        <div id="chat-container" style="display: none;">
+            <!-- Chat messages will be appended here -->
+        </div>
+        <div id="chatContainer" style="display: none;"><input type="text" id="userInput" placeholder="Enter your message..." />
+            <button id="sendButton" class="w-full bg-blue-700 text-white px-4" >Send</button></div>
     </div>
 </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
-
     <script>
         // Get the video element and buttons
         const startButton = document.getElementById('startButton');
         const stopButton = document.getElementById('stopButton');
         const closedCaptions = document.getElementById('cc');
+        const chatContainer = document.getElementById('chat-container');
+        const chatContainerMain = document.getElementById('chatContainer');
+        const displayText = document.getElementById('displayText')
+        let speak = false;
+        let prompt = ""
+        // Initialize a variable to store conversation history as a string
+        let conversationHistory = '';
         
         let ccList = []
 
@@ -65,10 +79,18 @@
             let size = ccList.length
             if(size <= 30) {
                 resultContainer1.innerText = resultContainer1.innerText + " " + ccList[size-1]
+                if(speak) {
+                    speakTextFromElement(ccList[size-1])
+                }
             } else {
                 ccList = []
                 resultContainer1.innerText = "";
             }
+        });
+        
+        // Listen for messages from the server
+        socket.on('predictionProbability', function (msg) {
+            prompt = msg;
         });
 
         // Handle the "Start Capture" button click
@@ -83,20 +105,153 @@
 
         // Function to start capturing frames
         function startCapturing() {
+            speak = true;
             if (closedCaptions.style.display === 'none') {
                 closedCaptions.style.display = 'block'; // Show the div
             } else {
                 closedCaptions.style.display = 'none';  // Hide the div
             }
+            
+            displayText.style.display = 'block';
+            chatContainer.style.display = 'none';
+            chatContainerMain.style.display = 'none';
+            
         }
 
         // Function to stop capturing frames
         function stopCapturing() {
+            speak = false;
             if (closedCaptions.style.display === 'none') {
                 closedCaptions.style.display = 'block'; // Show the div
             } else {
                 closedCaptions.style.display = 'none';  // Hide the div
             }
+
+            displayText.style.display = 'none';
+            chatContainer.style.display = 'block';
+            chatContainerMain.style.display = 'flex';
+
+            
+            const userMessage = prompt;
+            if (userMessage.trim() !== '') {
+                // Append user message to conversation history
+                conversationHistory += `User: ${userMessage}\n`;
+                // Add user message to the API request
+                const data = JSON.stringify({
+                    model: "gpt-3.5-turbo",
+                    messages: [
+                        {
+                            role: 'user',
+                            content: userMessage // Include the current user message
+                        }
+                    ],
+                    temperature: 0.8
+                })
+            }
+        }
+
+        function makeHttpRequest(data) {
+            const xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener('readystatechange', function () {
+                if (this.readyState === this.DONE) {
+                    const responseDiv = document.getElementById('chat-container');
+                    console.log(typeof(this.responseText));
+                    const response=JSON.parse(this.responseText);
+                    addMessage('bot', response.choices[0].message.content);
+                    responseDiv.scrollTop = responseDiv.scrollHeight; // Scroll to the bottom
+                }
+            });
+
+            xhr.open('POST', 'https://chatgpt-chatgpt3-5-chatgpt4.p.rapidapi.com/v1/chat/completions');
+            xhr.setRequestHeader('content-type', 'application/json');
+            xhr.setRequestHeader('X-RapidAPI-Key', 'd45f52f249msh9bd228e3021c62ap14cc88jsn67a5e7017768');
+            xhr.setRequestHeader('X-RapidAPI-Host', 'chatgpt-chatgpt3-5-chatgpt4.p.rapidapi.com');
+
+            xhr.send(data);
+        }
+
+        function addMessage(role, content) {
+            const chatContainer = document.getElementById('chat-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+            messageDiv.textContent = content;
+            chatContainer.appendChild(messageDiv);
+        }
+
+        const sendButton = document.getElementById('sendButton');
+        const userInput = document.getElementById('userInput');
+
+        sendButton.addEventListener('click', function () {
+            const userMessage = userInput.value;
+            if (userMessage.trim() !== '') {
+                // Append user message to conversation history
+                conversationHistory += `User: ${userMessage}\n`;
+
+                // Add user message to the API request
+                const data = JSON.stringify({
+                    model: "gpt-3.5-turbo",
+                    messages: [
+                        {
+                            role: 'user',
+                            content: conversationHistory // Include the entire conversation history
+                        },
+                        {
+                            role: 'user',
+                            content: userMessage // Include the current user message
+                        }
+                    ],
+                    temperature: 0.8
+                });
+
+                addMessage('user', userMessage);
+
+                // Make the API request
+                makeHttpRequest(data);
+
+                userInput.value = '';
+            }
+        });
+
+        userInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                const userMessage = userInput.value;
+                if (userMessage.trim() !== '') {
+                    // Append user message to conversation history
+                    conversationHistory += `User: ${userMessage}\n`;
+
+                    // Add user message to the API request
+                    const data = JSON.stringify({
+                        messages: [
+                            {
+                                role: 'user',
+                                content: conversationHistory // Include the entire conversation history
+                            },
+                            {
+                                role: 'user',
+                                content: userMessage // Include the current user message
+                            }
+                        ]
+                    });
+
+                    addMessage('user', userMessage);
+
+                    // Make the API request
+                    makeHttpRequest(data);
+
+                    userInput.value = '';
+                }
+            }
+        });
+
+        // Function to speak the text from the element with the given id
+        function speakTextFromElement(phrase) {
+            const textToSpeak = phrase;
+            const utterance = new SpeechSynthesisUtterance(textToSpeak);
+            utterance.rate = 2
+            utterance.pitch = 1.5
+            window.speechSynthesis.speak(utterance);
         }
 
     </script>
