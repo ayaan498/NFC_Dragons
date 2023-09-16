@@ -12,41 +12,10 @@
 <body class="bg-white border-gray-200 dark:bg-gray-900">
     {% include 'navin.html' %}
 
-    <!-- <nav class="navbar">
-        <span class="navbar-toggle" id="js-navbar-toggle">
-               <button class="togglebtn" onClick={this.buttonclicked}> <i class="fas fa-bars"></i></button>
-          </span>
-        <h5><a href="index.html" class="logo">Sign Language <span>Translator</span></a></h5>
-        <ul class="main-nav" id="js-menu">
-            <li>
-                <a href="index.html" class="nav-links orange" style="color: #ff9900;">Tutorials</a>
-            </li>
-            <li>
-                <a href="templates/Training.html" class="nav-links">Training</a>
-            </li>
-
-            <li>
-                <a href="templates\Model.html" class="nav-links">Test Your Skill</a>
-            </li>
-
-            <li>
-                <a href="templates/About.html" class="nav-links">About</a>
-            </li>
-
-        </ul>
-    </nav> -->
-
-
-
     <div class="mx-4 mt-5">
         <h1
             class="mb-6 text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
             The <mark class="px-2 text-white bg-blue-600 rounded dark:bg-blue-500">learning</mark> spot</h1>
-
-
-
-
-
 
         <form>
             <label for="default-search"
@@ -59,12 +28,13 @@
                             d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                     </svg>
                 </div>
-                <input type="search" id="default-search"
+                <input type="text" id="searchInput"
                     class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Search Mockups, Logos..." required>
-                <button type="submit"
+                    placeholder="Search Here" required>
+                <button id="searchBtn" type="submit"
                     class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
             </div>
+            <ul id="resultsList"></ul>
         </form>
 
         <section class="bg-white dark:bg-gray-900">
@@ -128,16 +98,6 @@
                                     <div><a class="dark:text-white" onclick="showImage('imageToShow', '/static/ISL_Gifs/5-are-you-hungry.gif')" href="#">Are you Hungry</a></div>
                                 </div>
                             </div>
-
-
-
-                            
-
-                            
-
-
-                            
-
 
                         </div>
                         <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel"
@@ -212,10 +172,104 @@
     </div>
 <script>
     function showImage(imageId, imagePath) {
-    const image = document.getElementById(imageId);
-    image.src = imagePath;
-    image.style.display = 'block'; // Show the image
-}
+        const image = document.getElementById(imageId);
+        image.src = imagePath;
+        image.style.display = 'block'; // Show the image
+    }
+
+    // Sample list of strings
+    const dataList = [
+        "Shall i help you",
+        "Nice to Meet you",
+        "Please call me",
+        "later",
+        "Do you have",
+        "money",
+        "Hello",
+        "Take Care",
+        "Be Careful",
+        "Any Questions",
+        "Lets go for lunch",
+        "Whats is your name",
+        "What is today's date",
+        "Where is the",
+        "bathroom",
+        "I am fine",
+        "I am Sorry",
+        "Open the door",
+        "Are you Hungry",
+        "A",
+        "B",
+        "C",
+        "D",
+        "F",
+        "E",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z",
+        "Shop",
+        "Punjab",
+        "Temple",
+        "Mumbai",
+        "Sturday",
+        "Wednesday",
+        "Police station",
+        "Cat",
+        "July",
+        "Pune",
+        "Bridge",
+        "Grapes",
+        "Bangalore",
+        "December",
+    ];
+
+    const searchInput = document.getElementById("searchInput");
+    const searchBtn = document.getElementById("searchBtn");
+    const resultsList = document.getElementById("resultsList");
+
+    // Function to perform the search
+    function performSearch() {
+        const query = searchInput.value.toLowerCase();
+        const filteredList = dataList.filter(item => item.toLowerCase().includes(query));
+
+        displayResults(filteredList);
+    }
+
+    // Function to display search results
+    function displayResults(results) {
+        resultsList.innerHTML = ""; // Clear previous results
+
+        if (results.length === 0) {
+            resultsList.innerHTML = "<li>No matching results found</li>";
+        } else {
+            results.forEach(result => {
+                const listItem = document.createElement("li");
+                listItem.textContent = result;
+                resultsList.appendChild(listItem);
+            });
+        }
+    }
+
+    // Event listener for the input field
+    searchInput.addEventListener("input", performSearch);
+
 </script>
 </body>
 

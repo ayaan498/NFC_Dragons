@@ -81,7 +81,7 @@ def generate_frames():
                     prediction = model.predict([np.asarray(data_aux)])
                     # prediction probability
                     # prediction_probability = model.predict_proba([np.asarray(data_aux)])
-                    # check = int(prediction[0])  
+                    # check = prediction[0]  
                     
                     predicted_sign = labels_dict[int(prediction[0])]
                     
@@ -108,7 +108,7 @@ def generate_frames():
             #     f"For the label '{labels_dict[i]}', the accuracy is {accuracy * 1000:.2f}%."
             #     for i, accuracy in enumerate(res) if accuracy > 0
             # ]
-            # prompt =problem_context+" "+ " ".join(non_zero_accuracies)
+            # prompt = check[2:4]
             # print(prompt)
             # predictionProbability(prompt)
 
@@ -124,7 +124,7 @@ def take_screenshot():
     image_name = image_name.replace(".","-")
     image_name = image_name.replace(":","-")
     image_name = image_name.replace(",","-")
-    screenshot = ImageGrab.grab(bbox=(300,150,1100,650))
+    screenshot = ImageGrab.grab(bbox=(500,300,1500,900))
     filepath = f"./screenshots/{image_name}.jpg"
     screenshot.save(filepath)
     return filepath
