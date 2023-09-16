@@ -184,13 +184,9 @@ def generate_frames_video_call():
                b'Content-Type: image/jpeg\r\n\r\n' +
                frame + b'\r\n')
 
-@app.route('/meet')
-def meet():
-    return render_template('meet.html')
 
-@app.route('/translator')
-def translator():
-    return render_template('translator.html')
+
+
 
 @app.route('/video')
 def video():
@@ -215,17 +211,17 @@ def tutorial():
         # return f'Hello, {session["username"]}! <a href="/logout">Logout</a>'
     return render_template("index.html")
 
-@app.route('/meet')
+@app.route('/translator')
 def meeting():
     if 'username' in session:
-        return render_template("meet.html")
+        return render_template("translator.html")
         # return f'Hello, {session["username"]}! <a href="/logout">Logout</a>'
     return render_template("index.html")
 
 @app.route('/')
 def home():
     if 'username' in session:
-        return render_template("translator.html")
+        return render_template("meet.html")
         # return f'Hello, {session["username"]}! <a href="/logout">Logout</a>'
     return render_template("index.html")
 

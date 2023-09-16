@@ -64,13 +64,15 @@
         const displayText = document.getElementById('displayText')
         let speak = false;
         let prompt = ""
-
+        let vS = document.getElementById('videoSource');
         window.addEventListener('unload', function () {
-            document.getElementById('videoSource').setAttribute('src','')
+            vS.setAttribute('src','')
+            vS.style.display = "none";
         });
 
         window.addEventListener('beforeunload', function (event) {
-            document.getElementById('videoSource').setAttribute('src','')
+            vS.setAttribute('src','')
+            vS.style.display = "none";
         });
 
         // Initialize a variable to store conversation history as a string
