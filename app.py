@@ -177,7 +177,7 @@ def generate_frames_video_call():
 
 @app.route('/')
 def index():
-    return render_template('translator.html')
+    return render_template('meet.html')
 
 @app.route('/video')
 def video():
