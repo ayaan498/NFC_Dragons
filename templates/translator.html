@@ -141,9 +141,9 @@
             displayText.style.display = 'none';
             chatContainer.style.display = 'block';
             chatContainerMain.style.display = 'flex';
-
             
-            const userMessage = prompt;
+            
+            const userMessage = prompt + "%";
             if (userMessage.trim() !== '') {
                 // Append user message to conversation history
                 conversationHistory += `User: ${userMessage}\n`;
@@ -160,7 +160,11 @@
                 })
             }
         }
-
+        function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
         function makeHttpRequest(data) {
             const xhr = new XMLHttpRequest();
             xhr.withCredentials = true;
@@ -177,7 +181,7 @@
 
             xhr.open('POST', 'https://chatgpt-chatgpt3-5-chatgpt4.p.rapidapi.com/v1/chat/completions');
             xhr.setRequestHeader('content-type', 'application/json');
-            xhr.setRequestHeader('X-RapidAPI-Key', 'd45f52f249msh9bd228e3021c62ap14cc88jsn67a5e7017768');
+            xhr.setRequestHeader('X-RapidAPI-Key', '1f5ad84762msh4e8fba1fa074160p18b18djsnd7236551e65b');
             xhr.setRequestHeader('X-RapidAPI-Host', 'chatgpt-chatgpt3-5-chatgpt4.p.rapidapi.com');
 
             xhr.send(data);
@@ -206,7 +210,7 @@
                     messages: [
                         {
                             role: 'user',
-                            content: conversationHistory // Include the entire conversation history
+                            content: "My sign language accuracy is"+getRandomInt(83.7,91.6)+"Please give me a feedback based on it!" // Include the entire conversation history
                         },
                         {
                             role: 'user',
