@@ -1,6 +1,5 @@
 from flask import Flask,render_template,Response,session
 from PIL import ImageGrab
-import pyautogui
 import cv2
 import pickle
 import mediapipe as mp
@@ -115,7 +114,7 @@ def take_screenshot():
     image_name = image_name.replace(".","-")
     image_name = image_name.replace(":","-")
     image_name = image_name.replace(",","-")
-    screenshot = ImageGrab.grab(bbox=(500,300,1500,800))
+    screenshot = ImageGrab.grab(bbox=(300,150,1100,650))
     filepath = f"./screenshots/{image_name}.jpg"
     screenshot.save(filepath)
     return filepath
@@ -125,7 +124,7 @@ def generate_frames_video_call():
         
     while True:
         # Create a video capture object for the screen
-        time.sleep(1)
+        time.sleep(0.2)
         screen_capture = take_screenshot()
 
         data_aux = []
