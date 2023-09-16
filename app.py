@@ -1,3 +1,5 @@
+from flask import Flask, render_template, request, redirect, session, url_for
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask,render_template,Response,session
 from PIL import ImageGrab
 import cv2
@@ -14,7 +16,15 @@ app=Flask(__name__)
 socketio = SocketIO(app)
 
 app.secret_key = 'your_secret_key'
-camera=cv2.VideoCapture(0)
+camera=cv2.VideoCapture(0) # Replace with a strong secret key
+
+# Dummy database (you should use a real database in production)
+users = {
+    'user1': {
+        'username': 'user1',
+        'password_hash': generate_password_hash('password1')
+    }
+}
 
 model_dict = pickle.load(open("./model.p", "rb"))
 model = model_dict["model"]
@@ -174,9 +184,13 @@ def generate_frames_video_call():
                b'Content-Type: image/jpeg\r\n\r\n' +
                frame + b'\r\n')
 
-@app.route('/')
-def index():
+@app.route('/meet')
+def meet():
     return render_template('meet.html')
+
+@app.route('/translator')
+def translator():
+    return render_template('translator.html')
 
 @app.route('/video')
 def video():
@@ -194,6 +208,60 @@ def closedCaptions(caption):
 def predictionProbability(prompt):
     socketio.emit('predictionProbability', prompt)
 
-if __name__=="__main__":
-    socketio.run(app, debug=True)
+@app.route('/tutorial')
+def tutorial():
+    if 'username' in session:
+        return render_template("tutorial.html")
+        # return f'Hello, {session["username"]}! <a href="/logout">Logout</a>'
+    return render_template("index.html")
 
+@app.route('/meet')
+def meeting():
+    if 'username' in session:
+        return render_template("meet.html")
+        # return f'Hello, {session["username"]}! <a href="/logout">Logout</a>'
+    return render_template("index.html")
+
+@app.route('/')
+def home():
+    if 'username' in session:
+        return render_template("translator.html")
+        # return f'Hello, {session["username"]}! <a href="/logout">Logout</a>'
+    return render_template("index.html")
+
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username in users:
+            return 'Username already exists. <a href="/signup">Try again</a>'
+        users[username] = {
+            'username': username,
+            'password_hash': generate_password_hash(password)
+        }
+        session['username'] = username
+        return redirect('/')
+    return render_template('signup.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = users.get(username)
+        if user and check_password_hash(user['password_hash'], password):
+            session['username'] = username
+            return redirect('/')
+        return 'Invalid login. <a href="/login">Try again</a>'
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect('/')
+
+if __name__ == '__main__':
+    socketio.run(app, debug=True)

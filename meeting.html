@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+    <style>
+        #chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 400px; /* Set the maximum height for the chat container */
+            overflow-y: auto; /* Enable vertical scrolling */
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .message {
+            max-width: 70%; /* Limit the width of the message containers */
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+
+        .user {
+            background-color: #f2f2f2;
+            align-self: flex-end; /* Right-align user messages */
+        }
+
+        .bot {
+            background-color: #e0e0e0;
+            align-self: flex-start; /* Left-align bot messages */
+        }
+    </style>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        
+    <div id="chat-container">
+        <!-- Chat messages will be appended here -->
+    </div>
+    <div style="display: flex;"><input type="text" id="userInput" placeholder="Enter your message..." />
+        <button id="sendButton" class="w-full bg-blue-700 text-white" >Send</button></div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
+    <script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Initialize a variable to store conversation history as a string
+        let conversationHistory = '';
+
+        function makeHttpRequest(data) {
+            const xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener('readystatechange', function () {
+                if (this.readyState === this.DONE) {
+                    const responseDiv = document.getElementById('chat-container');
+                    console.log(typeof(this.responseText));
+                    const response=JSON.parse(this.responseText);
+                    addMessage('bot', response.choices[0].message.content);
+                    responseDiv.scrollTop = responseDiv.scrollHeight; // Scroll to the bottom
+                }
+            });
+
+            xhr.open('POST', 'https://chatgpt-chatgpt3-5-chatgpt4.p.rapidapi.com/v1/chat/completions');
+            xhr.setRequestHeader('content-type', 'application/json');
+            xhr.setRequestHeader('X-RapidAPI-Key', 'd45f52f249msh9bd228e3021c62ap14cc88jsn67a5e7017768');
+            xhr.setRequestHeader('X-RapidAPI-Host', 'chatgpt-chatgpt3-5-chatgpt4.p.rapidapi.com');
+
+            xhr.send(data);
+        }
+
+        function addMessage(role, content) {
+            const chatContainer = document.getElementById('chat-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+            messageDiv.textContent = content;
+            chatContainer.appendChild(messageDiv);
+        }
+
+        const sendButton = document.getElementById('sendButton');
+        const userInput = document.getElementById('userInput');
+
+        sendButton.addEventListener('click', function () {
+            const userMessage = userInput.value;
+            if (userMessage.trim() !== '') {
+                // Append user message to conversation history
+                conversationHistory += `User: ${userMessage}\n`;
+
+                // Add user message to the API request
+                const data = JSON.stringify({
+                    model: "gpt-3.5-turbo",
+                    messages: [
+                        {
+                            role: 'user',
+                            content: conversationHistory // Include the entire conversation history
+                        },
+                        {
+                            role: 'user',
+                            content: userMessage // Include the current user message
+                        }
+                    ],
+                    temperature: 0.8
+                });
+
+                addMessage('user', userMessage);
+
+                // Make the API request
+                makeHttpRequest(data);
+
+                userInput.value = '';
+            }
+        });
+
+        userInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                const userMessage = userInput.value;
+                if (userMessage.trim() !== '') {
+                    // Append user message to conversation history
+                    conversationHistory += `User: ${userMessage}\n`;
+
+                    // Add user message to the API request
+                    const data = JSON.stringify({
+                        messages: [
+                            {
+                                role: 'user',
+                                content: conversationHistory // Include the entire conversation history
+                            },
+                            {
+                                role: 'user',
+                                content: userMessage // Include the current user message
+                            }
+                        ]
+                    });
+
+                    addMessage('user', userMessage);
+
+                    // Make the API request
+                    makeHttpRequest(data);
+
+                    userInput.value = '';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

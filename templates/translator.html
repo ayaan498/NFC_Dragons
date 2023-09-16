@@ -14,7 +14,7 @@
     <title>Translator</title>
 </head>
 <body>
-
+    {% include 'navin.html' %}
 <div id="mainContainer">
 
     <!-- Video Capture Card -->
@@ -64,6 +64,15 @@
         const displayText = document.getElementById('displayText')
         let speak = false;
         let prompt = ""
+
+        window.addEventListener('unload', function () {
+            document.getElementById('videoSource').setAttribute('src','')
+        });
+
+        window.addEventListener('beforeunload', function (event) {
+            document.getElementById('videoSource').setAttribute('src','')
+        });
+
         // Initialize a variable to store conversation history as a string
         let conversationHistory = '';
         

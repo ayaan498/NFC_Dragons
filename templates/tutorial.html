@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Language Translator</title>
+
+
+</head>
+
+<body class="bg-white border-gray-200 dark:bg-gray-900">
+    {% include 'navin.html' %}
+
+    <!-- <nav class="navbar">
+        <span class="navbar-toggle" id="js-navbar-toggle">
+               <button class="togglebtn" onClick={this.buttonclicked}> <i class="fas fa-bars"></i></button>
+          </span>
+        <h5><a href="index.html" class="logo">Sign Language <span>Translator</span></a></h5>
+        <ul class="main-nav" id="js-menu">
+            <li>
+                <a href="index.html" class="nav-links orange" style="color: #ff9900;">Tutorials</a>
+            </li>
+            <li>
+                <a href="templates/Training.html" class="nav-links">Training</a>
+            </li>
+
+            <li>
+                <a href="templates\Model.html" class="nav-links">Test Your Skill</a>
+            </li>
+
+            <li>
+                <a href="templates/About.html" class="nav-links">About</a>
+            </li>
+
+        </ul>
+    </nav> -->
+
+
+
+    <div class="mx-4 mt-5">
+        <h1
+            class="mb-6 text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+            The <mark class="px-2 text-white bg-blue-600 rounded dark:bg-blue-500">learning</mark> spot</h1>
+
+
+
+
+
+
+        <form>
+            <label for="default-search"
+                class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                    </svg>
+                </div>
+                <input type="search" id="default-search"
+                    class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Search Mockups, Logos..." required>
+                <button type="submit"
+                    class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+            </div>
+        </form>
+
+        <section class="bg-white dark:bg-gray-900">
+            <div
+                class="gap-8 py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
+                <img class=""
+                    id="imageToShow"
+                    src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg"
+                    alt="dashboard image">
+                
+
+                <div>
+                    <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+                        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab"
+                            data-tabs-toggle="#myTabContent" role="tablist">
+                            <li class="mr-2" role="presentation">
+                                <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab"
+                                    data-tabs-target="#profile" type="button" role="tab" aria-controls="profile"
+                                    aria-selected="false">Commonly Used</button>
+                            </li>
+                            <li class="mr-2" role="presentation">
+                                <button
+                                    class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                                    id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab"
+                                    aria-controls="dashboard" aria-selected="false">Alphabets</button>
+                            </li>
+                            <li class="mr-2" role="presentation">
+                                <button
+                                    class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                                    id="settings-tab" data-tabs-target="#settings" type="button" role="tab"
+                                    aria-controls="settings" aria-selected="false">Place, time and objects</button>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                    <div id="myTabContent">
+                        <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel"
+                            aria-labelledby="profile-tab">
+                            
+                            
+
+                            <div class="flex justify-between">
+                                <div class="column">
+                                    <div><a class="text-white" href="#" onclick="showImage('imageToShow', '/static/ISL_Gifs/62-shall-I-help-you.gif')">Shall i help you</a></div>
+                                    <div><a class="text-white" href="#" onclick="showImage('imageToShow', '/static/ISL_Gifs/53-nice-to-meet-you.gif')">Nice to Meet you</a></div>
+                                    <div><a class="text-white" href="#" onclick="showImage('imageToShow', '/static/ISL_Gifs/56-please-call-me-later.gif')">Please call me later</a></div>
+                                    <div><a class="text-white" href="#" onclick="showImage('imageToShow', '/static/ISL_Gifs/20-do-you-have-money.gif')">Do you have money</a></div>
+                                    <div><a class="text-white" href="#" onclick="showImage('imageToShow', '/static/ISL_Gifs/29-hello.gif')">Hello</a></div>
+                                    <div><a class="text-white" href="#" onclick="showImage('imageToShow', '/static/ISL_Gifs/68-take-care.gif')">Take Care</a></div>
+                                    <div><a class="text-white" href="#" onclick="showImage('imageToShow', '/static/ISL_Gifs/11-be-careful.gif')">Be Careful</a></div>
+                                    <div><a class="text-white" href="#" onclick="showImage('imageToShow', '/static/ISL_Gifs/3-any-questions.gif')">Any Questions</a></div>
+                                </div>
+                                <div class="column">
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/ISL_Gifs/47-lets-go-for-lunch.gif')" href="#">Lets go for lunch</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/ISL_Gifs/81-what-is-your-name.gif')" href="#">What is your name</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/ISL_Gifs/79-what-is-today\'s-date.gif')" href="#">What is today's date</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/ISL_Gifs/83-where-is-the-bathroom.gif')" href="#">Where is the bathroom</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/ISL_Gifs/33-i-am-fine.gif')" href="#">I am fine</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/ISL_Gifs/34-i-am-sorry.gif')" href="#">I am Sorry</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/ISL_Gifs/54-open-the-door.gif')" href="#">Open the door</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/ISL_Gifs/5-are-you-hungry.gif')" href="#">Are you Hungry</a></div>
+                                </div>
+                            </div>
+
+
+
+                            
+
+                            
+
+
+                            
+
+
+                        </div>
+                        <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel"
+                            aria-labelledby="dashboard-tab">
+                            <div class="flex justify-between">
+                                <div class="column">
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/a.gif')" href="#">A</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/e.gif')" href="#">E</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/i.gif')" href="#">I</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/m.gif')" href="#">M</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/q.gif')" href="#">Q</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/u.gif')" href="#">U</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/y.gif')" href="#">Y</a></div>
+                                </div>
+                                <div class="column">
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/b.gif')" href="#">B</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/f.gif')" href="#">F</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/j.gif')" href="#">J</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/n.gif')" href="#">N</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/r.gif')" href="#">R</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/v.gif')" href="#">V</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/z.gif')" href="#">Z</a></div>
+                                </div>
+                                <div class="column">
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/c.gif')" href="#">C</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/g.gif')" href="#">G</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/k.gif')" href="#">K</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/o.gif')" href="#">O</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/s.gif')" href="#">S</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/w.gif')" href="#">W</a></div>
+                                </div>
+                                <div class="column">
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/d.gif')"  href="#">D</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/h.gif')"  href="#">H</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/l.gif')"  href="#">L</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/p.gif')"  href="#">P</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/t.gif')"  href="#">T</a></div>
+                                    <div><a class="text-white" onclick="showImage('imageToShow', '/static/letters/x.gif')"  href="#">X</a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel"
+                            aria-labelledby="settings-tab">
+                            <div class="flex justify-between">
+                                <div class="column">
+                                    <div><a onclick="showImage('imageToShow', '/static/ISL_Gifs/64-shop.gif')" class="text-white" href="#">Shop</a></div>
+                                    <div><a onclick="showImage('imageToShow', '/static/ISL_Gifs/60-punjab.gif')" class="text-white" href="#">Punjab</a></div>
+                                    <div><a onclick="showImage('imageToShow', '/static/ISL_Gifs/69-temple.gif')" class="text-white" href="#">Temple</a></div>
+                                    <div><a onclick="showImage('imageToShow', '/static/ISL_Gifs/51-mumbai.gif')" class="text-white" href="#">Mumbai</a></div>
+                                    <div><a onclick="showImage('imageToShow', '/static/ISL_Gifs/61-saturday.gif')" class="text-white" href="#">Saturday</a></div>
+                                    <div><a onclick="showImage('imageToShow', '/static/ISL_Gifs/77-wednesday.gif')" class="text-white" href="#">Wednesday</a></div>
+                                    <div><a onclick="showImage('imageToShow', '/static/ISL_Gifs/57-police-station.gif')" class="text-white" href="#">Police station</a></div>
+                                    <div><a onclick="showImage('imageToShow', '/static/ISL_Gifs/13-cat.gif')" class="text-white" href="#">Cat</a></div>
+                                </div>
+                                <div class="column">
+                                    <div><a onclick="showImage('imageToShow', '/static/ISL_Gifs/42-july.gif')" class="text-white" href="#">July</a></div>
+                                    <div><a onclick="showImage('imageToShow', '/static/ISL_Gifs/59-pune.gif')" class="text-white" href="#">Pune</a></div>
+                                    <div><a onclick="showImage('imageToShow', '/static/ISL_Gifs/12-bridge.gif')" class="text-white" href="#">Bridge</a></div>
+                                    <div><a onclick="showImage('imageToShow', '/static/ISL_Gifs/28-grapes.gif')" class="text-white" href="#">Grapes</a></div>
+                                    <div><a onclick="showImage('imageToShow', '/static/ISL_Gifs/10-bangalore.gif')" class="text-white" href="#">Bangalore</a></div>
+                                    <div><a onclick="showImage('imageToShow', '/static/ISL_Gifs/18-december.gif')" class="text-white" href="#">December</a></div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+<script>
+    function showImage(imageId, imagePath) {
+    const image = document.getElementById(imageId);
+    image.src = imagePath;
+    image.style.display = 'block'; // Show the image
+}
+</script>
+</body>
+
+</html>

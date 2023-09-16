@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Meeting</title>
+</head>
+<body>
+    <h1>Join Meeting</h1>
+    <input type="text" id="meetingCode" placeholder="Enter Meeting Code">
+    <button id="joinButton">Join Meeting</button>
+
+    <script>
+        const joinButton = document.getElementById('joinButton');
+        const meetingCodeInput = document.getElementById('meetingCode');
+
+        // Mock server with hardcoded meeting codes
+        const meetingCodes = ['123456', '789012', '345678'];
+
+        // Function to check if a meeting code is valid
+        function isValidMeetingCode(code) {
+            return meetingCodes.includes(code);
+        }
+
+        // Event listener for the "Join Meeting" button
+        joinButton.addEventListener('click', () => {
+            const meetingCode = meetingCodeInput.value;
+
+            if (isValidMeetingCode(meetingCode)) {
+                // Redirect to the meeting page with the valid code
+                window.location.href = `/meeting.html?code=${meetingCode}`;
+            } else {
+                alert('Invalid meeting code. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>
